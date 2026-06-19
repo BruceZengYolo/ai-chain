@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI硬件产业链 · 知识图谱与核心标的大全</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body{
+    font-family:"Microsoft YaHei","PingFang SC","Helvetica Neue",Arial,sans-serif;
+    background:linear-gradient(135deg,#0d1b2a 0%,#1b263b 100%);
+    color:#e0e6ed; line-height:1.6; padding-bottom:60px;
+  }
+  header{ text-align:center; padding:34px 20px 18px; }
+  header h1{ font-size:34px; color:#fff; letter-spacing:1px; }
+  header .sub{ color:#8fb3d9; font-size:17px; margin-top:8px; }
+  header .tip{ color:#c0cad6; font-size:15px; margin-top:14px; max-width:920px; margin-left:auto; margin-right:auto; background:rgba(255,255,255,.06); padding:12px 18px; border-radius:10px; }
+  .legend{ text-align:center; margin:16px auto 6px; font-size:15px; color:#cdd8e3; }
+  .legend .star{ color:#ffce3a; font-weight:bold; }
+  .legend .badge{ display:inline-block; background:#ffce3a; color:#1b263b; font-size:12px; padding:1px 8px; border-radius:10px; font-weight:bold; }
+
+  /* 流程图：横向8层 */
+  .flow{ display:flex; gap:10px; overflow-x:auto; padding:24px 24px 30px; align-items:stretch; }
+  .layer{ min-width:215px; flex:0 0 auto; display:flex; flex-direction:column; }
+  .layer-head{
+    text-align:center; padding:10px 6px; border-radius:10px 10px 0 0;
+    font-weight:bold; font-size:17px; color:#fff;
+  }
+  .layer-num{ display:block; font-size:12px; opacity:.85; font-weight:normal; }
+  .layer-body{
+    background:rgba(255,255,255,.05); border-radius:0 0 10px 10px;
+    padding:10px; flex:1; display:flex; flex-direction:column; gap:8px;
+    border:1px solid rgba(255,255,255,.08); border-top:none;
+  }
+  .seg{
+    background:rgba(255,255,255,.09); border-radius:8px; padding:10px 12px;
+    cursor:pointer; transition:.18s; border-left:4px solid transparent;
+    font-size:15px;
+  }
+  .seg:hover{ background:rgba(255,255,255,.2); transform:translateY(-2px); }
+  .seg .seg-name{ font-weight:bold; color:#fff; }
+  .seg .seg-desc{ font-size:12.5px; color:#a9b8c7; margin-top:3px; }
+  .seg .seg-cnt{ font-size:11px; color:#7fd1b9; margin-top:4px; }
+
+  .arrow{ display:flex; align-items:center; color:#5a7fa6; font-size:26px; flex:0 0 auto; }
+
+  /* 弹窗 */
+  .overlay{
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,.65);
+    z-index:50; justify-content:center; align-items:flex-start; padding:40px 16px; overflow-y:auto;
+  }
+  .overlay.show{ display:flex; }
+  .modal{
+    background:#162234; border-radius:16px; max-width:860px; width:100%;
+    box-shadow:0 20px 60px rgba(0,0,0,.5); border:1px solid rgba(255,255,255,.1);
+    animation:pop .2s ease;
+  }
+  @keyframes pop{ from{transform:scale(.95);opacity:0} to{transform:scale(1);opacity:1} }
+  .modal-head{ padding:20px 26px; border-bottom:1px solid rgba(255,255,255,.1); position:relative; }
+  .modal-head h2{ font-size:23px; color:#fff; }
+  .modal-head .m-layer{ font-size:13px; color:#8fb3d9; margin-bottom:6px; }
+  .modal-head .m-desc{ font-size:15px; color:#c0cad6; margin-top:8px; background:rgba(255,255,255,.05); padding:10px 14px; border-radius:8px; }
+  .close{ position:absolute; top:18px; right:22px; font-size:28px; color:#8fb3d9; cursor:pointer; line-height:1; }
+  .close:hover{ color:#fff; }
+  .cols{ display:flex; gap:0; }
+  .col{ flex:1; padding:18px 22px; }
+  .col:first-child{ border-right:1px solid rgba(255,255,255,.1); }
+  .col h3{ font-size:17px; margin-bottom:12px; padding-bottom:8px; border-bottom:2px solid; }
+  .col.cn h3{ color:#ff6b6b; border-color:#ff6b6b; }
+  .col.gl h3{ color:#4dabf7; border-color:#4dabf7; }
+  .stock{
+    padding:7px 10px; margin-bottom:6px; border-radius:7px; font-size:15px;
+    background:rgba(255,255,255,.05); display:flex; justify-content:space-between; align-items:center;
+  }
+  .stock.leader{ background:rgba(255,206,58,.16); border:1px solid rgba(255,206,58,.5); }
+  .stock .nm{ color:#e8eef4; }
+  .stock.leader .nm{ color:#fff; font-weight:bold; }
+  .stock .nm .star{ color:#ffce3a; margin-right:4px; }
+  .stock .code{ font-size:12px; color:#8295a8; font-family:monospace; }
+  .note{ font-size:12.5px; color:#8295a8; padding:0 22px 18px; font-style:italic; }
+  footer{ text-align:center; color:#5a7fa6; font-size:13px; margin-top:30px; padding:0 20px; }
+  .disc{ max-width:900px; margin:14px auto 0; font-size:12.5px; color:#6b8299; }
+  @media(max-width:640px){ .cols{flex-direction:column} .col:first-child{border-right:none;border-bottom:1px solid rgba(255,255,255,.1)} }
+</style>
+</head>
+<body>
+<header>
+  <h1>AI硬件产业链 · 知识图谱</h1>
+  <div class="sub">从上游原材料 → 芯片 → 存储 → 封测 → 设备 → 光通信 → 服务器 → 下游应用</div>
+  <div class="tip">📌 怎么看：下面这张图从<b>左边（最上游的原材料）</b>一路流到<b>右边（最终用在哪）</b>。每个方块是一个细分环节，<b>点一下方块</b>就能看到这个环节里中国和国外的代表公司。</div>
+</header>
+
+<div class="legend">
+  <span class="badge">★ 龙头</span> = 该环节最核心 / 最值得重点关注的标的（金色高亮）　|　带代码的为A股，港股/美股/海外公司在右列
+</div>
+
+<div class="flow" id="flow"></div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div class="m-layer" id="mLayer"></div>
+      <h2 id="mTitle"></h2>
+      <div class="m-desc" id="mDesc"></div>
+    </div>
+    <div class="cols">
+      <div class="col cn"><h3>🇨🇳 中国（A股 / 港股）</h3><div id="cnList"></div></div>
+      <div class="col gl"><h3>🌐 国外（美 / 日 / 欧 / 韩 / 台）</h3><div id="glList"></div></div>
+    </div>
+    <div class="note" id="mNote"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="disc">⚠️ 本图谱仅作产业链科普与梳理之用，所列公司为产业链卡位代表，不构成任何投资建议。未上市公司以文字标注。市场有风险，决策需谨慎。</div>
+  <div style="margin-top:10px">AI硬件产业链知识图谱 · 科普版</div>
+</footer>
+
+<script>
+// ★=leader龙头/最推荐  s(名称, 代码, 是否龙头)
+function s(nm, code, leader){ return {nm, code:code||'', leader:!!leader}; }
+
+const DATA = [
+{
+  id:1, name:"①上游原材料", color:"#6a4c93",
+  segs:[
+    { name:"硅片（大硅片）", desc:"做芯片的“地基”，圆片", cn:[s("沪硅产业","688126",1),s("TCL中环","002129"),s("立昂微","605358"),s("神工股份","688233"),s("中晶科技","003026")], gl:[s("信越化学","日·龙头",1),s("SUMCO","日",1),s("环球晶圆","台"),s("Siltronic","德"),s("SK Siltron","韩")], note:"全球前五大硅片厂垄断九成市场，国产替代空间大。" },
+    { name:"光刻胶", desc:"芯片刻图案用的“感光涂料”", cn:[s("彤程新材","603650",1),s("南大光电","300346"),s("晶瑞电材","300655"),s("华懋科技","603306"),s("容大感光","300576")], gl:[s("JSR","日·龙头",1),s("东京应化TOK","日",1),s("信越化学","日"),s("杜邦","美"),s("默克Merck","德")], note:"高端EUV光刻胶国产化率极低，是“卡脖子”重点。" },
+    { name:"电子特种气体", desc:"制造芯片用的高纯度气体", cn:[s("华特气体","688268",1),s("金宏气体","688106"),s("昊华科技","600378"),s("南大光电","300346"),s("凯美特气","002549")], gl:[s("林德Linde","美/德·龙头",1),s("空气化工","美",1),s("液化空气","法"),s("大阳日酸","日")], note:"" },
+    { name:"湿电子化学品", desc:"清洗/腐蚀用的高纯化学液", cn:[s("江化微","603078",1),s("晶瑞电材","300655"),s("上海新阳","300236"),s("巨化股份","600160")], gl:[s("BASF","德",1),s("Stella Chemifa","日"),s("森田化学","日"),s("霍尼韦尔","美")], note:"" },
+    { name:"CMP抛光材料", desc:"把芯片表面磨平的抛光垫/液", cn:[s("鼎龙股份","300054",1),s("安集科技","688019",1),s("华海诚科","688535")], gl:[s("卡博特Cabot","美·龙头",1),s("陶氏Dow","美"),s("Fujimi","日"),s("Versum/默克","美/德")], note:"鼎龙抛光垫、安集抛光液均已规模供货。" },
+    { name:"溅射靶材", desc:"在芯片上镀金属膜的“原料块”", cn:[s("江丰电子","300666",1),s("有研新材","600206"),s("隆华科技","300263"),s("阿石创","300706")], gl:[s("霍尼韦尔","美·龙头",1),s("JX金属","日"),s("东曹Tosoh","日"),s("普莱克斯","美")], note:"" },
+    { name:"掩膜版（光掩膜）", desc:"刻图案用的“底片/模板”", cn:[s("清溢光电","688138",1),s("路维光电","688401")], gl:[s("Photronics","美·龙头",1),s("凸版Toppan","日"),s("DNP大日本印刷","日")], note:"" },
+    { name:"封装材料", desc:"塑封料/载板/键合丝/引线框架", cn:[s("华海诚科","688535(塑封料)",1),s("深南电路","002916(载板)"),s("兴森科技","002436(载板)"),s("康强电子","002119(框架)")], gl:[s("住友电木","日(塑封料)",1),s("揖斐电Ibiden","日(载板)",1),s("新光电气","日(载板)"),s("田中贵金属","日(键合丝)")], note:"" },
+    { name:"MLCC粉体/电极浆料", desc:"做电容的陶瓷粉和金属浆", cn:[s("国瓷材料","300285",1),s("博迁新材","605376(镍粉)",1)], gl:[s("堺化学","日·龙头",1),s("昭荣化学","日(浆料)"),s("日本化学工业","日")], note:"AI服务器MLCC用量倍增，带动上游粉体。" },
+    { name:"电子级玻璃基材", desc:"下一代玻璃基板的原料玻璃", cn:[s("沃格光电","603773",1),s("凯盛科技","600552"),s("菲利华","300395")], gl:[s("康宁Corning","美·龙头",1),s("肖特SCHOTT","德"),s("AGC","日")], note:"玻璃基板2025-26新风口的上游。" },
+    { name:"PCB材料(覆铜板/铜箔)", desc:"电路板的“板材+铜皮+布”", cn:[s("生益科技","600183",1),s("南亚新材","688519"),s("华正新材","603186"),s("德福科技","301511(铜箔)"),s("宏和科技","603256(玻纤布)")], gl:[s("松下Panasonic","日·龙头",1),s("罗杰斯Rogers","美(高频)",1),s("台光电子","台"),s("联茂","台")], note:"高速覆铜板是AI服务器/交换机关键材料。" },
+  ]
+},
+{
+  id:2, name:"②芯片(设计+制造)", color:"#1982c4",
+  segs:[
+    { name:"AI算力芯片(GPU/ASIC)", desc:"AI的“大脑/发动机”", cn:[s("寒武纪","688256",1),s("海光信息","688041",1),s("景嘉微","300474"),s("龙芯中科","688047"),s("芯原股份","688521(ASIC)")], gl:[s("英伟达Nvidia","美·绝对龙头",1),s("博通Broadcom","美(ASIC)",1),s("AMD","美"),s("Marvell","美(ASIC)"),s("谷歌TPU","美")], note:"未上市重点：华为昇腾、壁仞、燧原、摩尔线程。" },
+    { name:"CPU", desc:"通用计算的核心处理器", cn:[s("海光信息","688041",1),s("龙芯中科","688047")], gl:[s("英特尔Intel","美",1),s("AMD","美",1),s("Arm","英/软银")], note:"未上市：华为鲲鹏、飞腾。" },
+    { name:"FPGA", desc:"可编程的“万能芯片”", cn:[s("复旦微电","688385",1),s("安路科技","688107"),s("紫光国微","002049")], gl:[s("AMD(Xilinx)","美·龙头",1),s("英特尔(Altera)","美"),s("Lattice","美"),s("Microchip","美")], note:"" },
+    { name:"接口/连接芯片", desc:"芯片间高速“数据通道”", cn:[s("澜起科技","688008",1),s("裕太微","688515"),s("聚辰股份","688123")], gl:[s("Astera Labs","美·龙头",1),s("Marvell","美"),s("Rambus","美(IP)"),s("Microchip","美")], note:"Retimer/PCIe Switch/CXL，AI服务器互联关键。" },
+    { name:"模拟/电源管理芯片", desc:"管电、信号转换的芯片", cn:[s("圣邦股份","300661",1),s("思瑞浦","688536"),s("纳芯微","688052"),s("杰华特","688141"),s("晶丰明源","688368")], gl:[s("德州仪器TI","美·龙头",1),s("ADI","美",1),s("MPS","美"),s("英飞凌","德"),s("瑞萨","日")], note:"" },
+    { name:"光芯片(激光器/DSP)", desc:"光模块里的“发光/收光”芯", cn:[s("源杰科技","688498",1),s("仕佳光子","688313"),s("长光华芯","688048"),s("光库科技","300620")], gl:[s("Coherent","美·龙头",1),s("Lumentum","美",1),s("博通","美(DSP)"),s("Marvell","美(DSP)"),s("住友电工","日")], note:"高端EML激光器芯片国产化是重点突破口。" },
+    { name:"晶圆代工(Foundry)", desc:"替别人“代工造芯片”的厂", cn:[s("中芯国际","688981",1),s("华虹公司","688347",1),s("晶合集成","688249")], gl:[s("台积电TSMC","台·绝对龙头",1),s("三星Samsung","韩"),s("GlobalFoundries","美"),s("联电UMC","台")], note:"" },
+  ]
+},
+{
+  id:3, name:"③存储", color:"#8ac926",
+  segs:[
+    { name:"存储芯片原厂(DRAM/NAND)", desc:"存数据的“仓库”芯片", cn:[s("兆易创新","603986(NOR/利基)",1),s("北京君正","300223"),s("东芯股份","688110")], gl:[s("三星","韩·龙头",1),s("SK海力士","韩",1),s("美光Micron","美"),s("铠侠Kioxia","日"),s("西部数据","美")], note:"未上市核心：长江存储(NAND)、长鑫存储(DRAM)。" },
+    { name:"HBM 高带宽内存", desc:"AI芯片的“专用高速内存”", cn:[s("香农芯创","300475(布局)",1),s("雅克科技","002409(前驱体)",1),s("通富微电","002156(封装)"),s("深科技","000021(封测)"),s("太极实业","600667")], gl:[s("SK海力士","韩·绝对龙头",1),s("三星","韩",1),s("美光Micron","美")], note:"HBM是AI算力最稀缺资源，国内主要从材料/封装切入。" },
+    { name:"存储接口/主控芯片", desc:"内存/硬盘的“管理芯片”", cn:[s("澜起科技","688008(内存接口)",1),s("聚辰股份","688123(SPD)"),s("江波龙","301308(主控)")], gl:[s("Rambus","美",1),s("慧荣Silicon Motion","台",1),s("群联Phison","台"),s("Marvell","美")], note:"澜起内存接口芯片全球三强之一。" },
+    { name:"存储模组", desc:"把芯片组装成内存条/硬盘", cn:[s("江波龙","301308",1),s("佰维存储","688525"),s("德明利","001309"),s("深科技","000021")], gl:[s("金士顿Kingston","美·龙头",1),s("威刚ADATA","台"),s("美光","美")], note:"" },
+  ]
+},
+{
+  id:4, name:"④封装测试", color:"#ff924c",
+  segs:[
+    { name:"封测代工(OSAT)", desc:"给芯片“穿外壳+体检”", cn:[s("长电科技","600584",1),s("通富微电","002156",1),s("华天科技","002185"),s("甬矽电子","688362"),s("晶方科技","603005")], gl:[s("日月光ASE","台·龙头",1),s("安靠Amkor","美",1),s("力成","台"),s("京元电","台(测试)")], note:"" },
+    { name:"先进封装/CoWoS", desc:"把多颗芯片“叠/拼”在一起", cn:[s("通富微电","002156(2.5D)",1),s("长电科技","600584"),s("甬矽电子","688362")], gl:[s("台积电TSMC","台·绝对龙头",1),s("日月光","台"),s("安靠","美")], note:"CoWoS是英伟达GPU的产能瓶颈，台积电独大。" },
+    { name:"玻璃基板(下一代载板)", desc:"用玻璃替代树脂做芯片底座", cn:[s("沃格光电","603773",1),s("凯盛科技","600552"),s("菲利华","300395"),s("德邦科技","688035")], gl:[s("英特尔Intel","美·领跑",1),s("三星电机","韩"),s("Absolics(SKC)","韩"),s("AGC","日"),s("康宁","美")], note:"2025-26产业化加速，国内多家卡位。" },
+  ]
+},
+{
+  id:5, name:"⑤半导体设备", color:"#c1121f",
+  segs:[
+    { name:"光刻机", desc:"芯片制造“皇冠上的明珠”", cn:[s("茂莱光学","688502(配套)"),s("福晶科技","002222(光学)")], gl:[s("ASML","荷·绝对垄断EUV",1),s("佳能Canon","日"),s("尼康Nikon","日")], note:"未上市核心：上海微电子(SMEE)。" },
+    { name:"刻蚀机", desc:"把芯片多余部分“雕刻掉”", cn:[s("中微公司","688012",1),s("北方华创","002371",1),s("屹唐股份","688729")], gl:[s("泛林Lam Research","美·龙头",1),s("东京电子TEL","日"),s("应用材料AMAT","美")], note:"中微刻蚀机已进台积电产线。" },
+    { name:"薄膜沉积(CVD/PVD/ALD)", desc:"在芯片上“镀一层层薄膜”", cn:[s("北方华创","002371",1),s("拓荆科技","688072",1),s("微导纳米","688147")], gl:[s("应用材料AMAT","美·龙头",1),s("泛林","美"),s("东京电子","日"),s("ASM International","荷")], note:"" },
+    { name:"离子注入机", desc:"给芯片“掺杂”改性能", cn:[s("万业企业","600641(凯世通)",1)], gl:[s("应用材料AMAT","美·龙头",1),s("Axcelis","美")], note:"未上市：中科信。" },
+    { name:"清洗设备", desc:"洗掉芯片表面杂质", cn:[s("盛美上海","688082",1),s("北方华创","002371"),s("芯源微","688037"),s("至纯科技","603690")], gl:[s("东京电子TEL","日·龙头",1),s("SCREEN迪恩士","日",1),s("泛林","美")], note:"" },
+    { name:"CMP抛光设备", desc:"把芯片表面磨平的机器", cn:[s("华海清科","688120",1)], gl:[s("应用材料AMAT","美·龙头",1),s("荏原Ebara","日")], note:"华海清科国内CMP设备独苗。" },
+    { name:"量测/检测设备", desc:"给芯片做“质检/拍CT”", cn:[s("中科飞测","688361",1),s("精测电子","300567"),s("赛腾股份","603283")], gl:[s("KLA科磊","美·绝对龙头",1),s("应用材料","美"),s("日立高新","日")], note:"未上市：东方晶源。" },
+    { name:"先进封装设备/键合机", desc:"把芯片“贴合/堆叠”的机器", cn:[s("迈为股份","300751",1),s("新益昌","688383"),s("华卓精科","")], gl:[s("BESI","荷·混合键合龙头",1),s("ASMPT","港/新",1),s("K&S","美")], note:"混合键合(Hybrid Bonding)是3D封装关键。" },
+    { name:"存储芯片制造设备", desc:"专造存储芯片的设备(3D NAND等)", cn:[s("中微公司","688012(高深宽比刻蚀)",1),s("拓荆科技","688072"),s("北方华创","002371")], gl:[s("泛林Lam","美·3D NAND龙头",1),s("东京电子","日"),s("应用材料","美")], note:"3D NAND堆叠层数竞赛，刻蚀/沉积设备价值量大。" },
+    { name:"设备核心零部件(EFEM等)", desc:"设备里的“关键小零件”", cn:[s("富创精密","688409(金属件/腔体)",1),s("江丰电子","300666(静电吸盘)",1),s("英杰电气","300820(射频电源)",1),s("正帆科技","688596(气体模块)"),s("汉钟精机","002158(真空泵)"),s("菲利华","300395(石英件)"),s("珂玛科技","301611(陶瓷)"),s("新莱应材","300260")], gl:[s("MKS Instruments","美·龙头",1),s("Advanced Energy","美(RF电源)"),s("爱德华Edwards","英(真空泵)"),s("Ferrotec","日(吸盘/部件)"),s("Brooks/Azenta","美(EFEM机械手)"),s("堀场Horiba","日(MFC)")], note:"静电吸盘/RF电源/真空泵/MFC国产化率仅1%-5%，是国产替代价值最高、最稀缺的环节；EFEM(晶圆传送机械手)国产卡位仍在早期。" },
+  ]
+},
+{
+  id:6, name:"⑥光通信", color:"#00afb9",
+  segs:[
+    { name:"光模块(800G/1.6T)", desc:"数据中心间“光信号收发器”", cn:[s("中际旭创","300308",1),s("新易盛","300502",1),s("天孚通信","300394"),s("光迅科技","002281"),s("华工科技","000988"),s("东山精密","002384(索尔思光电)"),s("剑桥科技","603083")], gl:[s("Coherent","美·龙头",1),s("Lumentum","美"),s("Marvell","美(DSP)"),s("Fabrinet","泰(代工)")], note:"中际旭创、新易盛为全球800G光模块出货龙头。" },
+    { name:"光器件", desc:"光模块里的“零件”", cn:[s("天孚通信","300394",1),s("太辰光","300570"),s("光库科技","300620"),s("腾景科技","688195"),s("博创科技","300548")], gl:[s("Coherent","美",1),s("Lumentum","美"),s("住友电工","日"),s("古河电工","日")], note:"" },
+    { name:"CPO共封装光学", desc:"把光器件直接“封进芯片旁”", cn:[s("中际旭创","300308",1),s("天孚通信","300394"),s("太辰光","300570"),s("光迅科技","002281")], gl:[s("英伟达","美·主推",1),s("博通","美",1),s("Coherent","美"),s("Lumentum","美")], note:"CPO是下一代光互联方向，降低功耗。" },
+    { name:"光模块生产设备", desc:"造光模块的“耦合/测试机”", cn:[s("罗博特科","300757",1),s("华兴源创","688001"),s("海目星","688559(激光)")], gl:[s("以海外定制设备厂为主","")], note:"" },
+    { name:"光纤光缆", desc:"传输光信号的“玻璃丝”", cn:[s("长飞光纤","601869",1),s("亨通光电","600487"),s("中天科技","600522"),s("烽火通信","600498")], gl:[s("康宁Corning","美·龙头",1),s("Prysmian","意"),s("住友电工","日")], note:"" },
+  ]
+},
+{
+  id:7, name:"⑦服务器及配套", color:"#3a86ff",
+  segs:[
+    { name:"AI服务器整机", desc:"把芯片组装成“算力机器”", cn:[s("工业富联","601138",1),s("浪潮信息","000977",1),s("中科曙光","603019"),s("紫光股份","000938"),s("联想集团","港·00992"),s("神州数码","000034")], gl:[s("超微SMCI","美·龙头",1),s("戴尔Dell","美",1),s("慧与HPE","美"),s("广达Quanta","台"),s("纬颖","台"),s("鸿海","台")], note:"" },
+    { name:"交换机/交换芯片", desc:"数据中心的“交通枢纽”", cn:[s("紫光股份","000938(新华三)",1),s("锐捷网络","301165"),s("盛科通信","688702(交换芯片)",1),s("菲菱科思","301191")], gl:[s("思科Cisco","美·龙头",1),s("Arista","美",1),s("博通","美(交换芯片)"),s("瞻博Juniper","美")], note:"" },
+    { name:"PCB/高速覆铜板", desc:"承载芯片的“电路板”", cn:[s("沪电股份","002463",1),s("胜宏科技","300476",1),s("东山精密","002384"),s("生益科技","600183"),s("深南电路","002916"),s("景旺电子","603228")], gl:[s("揖斐电Ibiden","日·龙头",1),s("新光电气","日"),s("欣兴Unimicron","台"),s("AT&S","奥")], note:"AI服务器PCB层数/价值量大幅提升。" },
+    { name:"高速连接器/铜缆", desc:"信号传输的“插头和线”", cn:[s("沃尔核材","002130",1),s("鼎通科技","688668"),s("华丰科技","688629"),s("电连技术","300679"),s("立讯精密","002475")], gl:[s("安费诺Amphenol","美·龙头",1),s("莫仕Molex","美"),s("泰科TE","瑞士")], note:"DAC/AEC高速铜缆为短距互联主力。" },
+    { name:"服务器电源/BBU", desc:"给服务器“供电+备电”", cn:[s("麦格米特","002851",1),s("欧陆通","300870"),s("科华数据","002335"),s("中恒电气","002364"),s("泰嘉股份","002843")], gl:[s("台达电子Delta","台·龙头",1),s("维谛Vertiv","美",1),s("光宝","台")], note:"" },
+    { name:"散热(液冷/VC/热管)", desc:"给服务器“降温”", cn:[s("英维克","002837",1),s("申菱环境","301018"),s("高澜股份","300499"),s("飞荣达","300602"),s("中石科技","300684(VC)")], gl:[s("维谛Vertiv","美·龙头",1),s("台达","台"),s("双鸿","台"),s("奇鋐AVC","台")], note:"液冷是AI高功耗机柜的必选项，英维克国内龙头。" },
+    { name:"被动元件(MLCC/电感)", desc:"电路板上的“小电容/电感”", cn:[s("三环集团","300408(MLCC)",1),s("风华高科","000636(MLCC)",1),s("顺络电子","002138(电感)"),s("洁美科技","002859(载带)"),s("火炬电子","603678")], gl:[s("村田Murata","日·绝对龙头",1),s("TDK","日"),s("三星电机","韩"),s("太阳诱电","日"),s("国巨Yageo","台")], note:"单台AI服务器MLCC用量是普通服务器数倍。" },
+  ]
+},
+{
+  id:8, name:"⑧下游应用", color:"#8338ec",
+  segs:[
+    { name:"算力租赁", desc:"把算力“按需出租”收租金", cn:[s("润泽科技","300442",1),s("莲花控股","600186"),s("首都在线","300846"),s("青云科技","688316"),s("云赛智联","600602"),s("鸿博股份","002229"),s("中贝通信","603220"),s("并行科技","839493"),s("恒润股份","603985")], gl:[s("CoreWeave","美·龙头",1),s("Nebius","荷",1),s("Lambda","美"),s("Crusoe","美"),s("IREN","澳/美")], note:"AI算力“包租公”模式，2025年起爆发的新赛道。" },
+    { name:"云厂商/IDC数据中心", desc:"提供云计算和机房", cn:[s("万国数据","美/港·龙头",1),s("世纪互联","美"),s("光环新网","300383"),s("宝信软件","600845"),s("奥飞数据","300738")], gl:[s("微软Azure","美·龙头",1),s("亚马逊AWS","美",1),s("谷歌GCP","美"),s("甲骨文Oracle","美"),s("Meta","美")], note:"未上市/巨头：阿里云、腾讯云、华为云。" },
+    { name:"AI大模型/软件", desc:"会聊天/写作的AI“大脑”", cn:[s("科大讯飞","002230",1),s("昆仑万维","300418"),s("三六零","601360"),s("万兴科技","300624")], gl:[s("微软/OpenAI","美·龙头",1),s("谷歌Gemini","美"),s("Meta","美"),s("Anthropic","美"),s("xAI","美")], note:"未上市核心：DeepSeek、智谱、月之暗面、MiniMax。" },
+    { name:"智能驾驶", desc:"让车“自己会开”", cn:[s("德赛西威","002920",1),s("比亚迪","002594"),s("小鹏汽车","港/美"),s("理想汽车","港/美"),s("地平线","港·09660"),s("四维图新","002405")], gl:[s("特斯拉","美·龙头",1),s("英伟达","美(智驾芯片)",1),s("Mobileye","美"),s("高通","美")], note:"" },
+    { name:"人形机器人", desc:"会干活的“机器人”", cn:[s("拓普集团","601689",1),s("三花智控","002050",1),s("绿的谐波","688017"),s("汇川技术","300124"),s("双环传动","002472"),s("鸣志电器","603728")], gl:[s("特斯拉Optimus","美·龙头",1),s("英伟达","美(大脑)",1),s("波士顿动力","美(现代)")], note:"未上市：宇树科技、智元机器人。" },
+    { name:"AI手机/AIPC", desc:"装了AI的手机和电脑", cn:[s("立讯精密","002475",1),s("工业富联","601138"),s("传音控股","688036"),s("联想集团","港·00992")], gl:[s("苹果Apple","美·龙头",1),s("高通","美(芯片)",1),s("三星","韩"),s("戴尔/惠普","美")], note:"" },
+  ]
+},
+];
+
+// 渲染流程图
+const flow = document.getElementById('flow');
+DATA.forEach((layer, idx)=>{
+  const div = document.createElement('div');
+  div.className = 'layer';
+  let segHtml = '';
+  layer.segs.forEach((seg, si)=>{
+    const cnt = (seg.cn?seg.cn.length:0) + (seg.gl?seg.gl.length:0);
+    segHtml += `<div class="seg" style="border-left-color:${layer.color}" onclick="openModal(${idx},${si})">
+        <div class="seg-name">${seg.name}</div>
+        <div class="seg-desc">${seg.desc}</div>
+        <div class="seg-cnt">▸ ${cnt} 家代表公司</div>
+      </div>`;
+  });
+  div.innerHTML = `<div class="layer-head" style="background:${layer.color}">
+      <span class="layer-num">第 ${layer.id} 层</span>${layer.name.replace(/^[①②③④⑤⑥⑦⑧]/,'')}</div>
+    <div class="layer-body">${segHtml}</div>`;
+  flow.appendChild(div);
+  if(idx < DATA.length-1){
+    const ar = document.createElement('div');
+    ar.className='arrow'; ar.innerHTML='➜';
+    flow.appendChild(ar);
+  }
+});
+
+function renderList(arr){
+  if(!arr || !arr.length) return '<div style="color:#7f93a8;font-size:14px">—</div>';
+  return arr.map(x=>`<div class="stock ${x.leader?'leader':''}">
+      <span class="nm">${x.leader?'<span class="star">★</span>':''}${x.nm}</span>
+      <span class="code">${x.code}</span></div>`).join('');
+}
+
+function openModal(li, si){
+  const layer = DATA[li]; const seg = layer.segs[si];
+  document.getElementById('mLayer').textContent = layer.name;
+  document.getElementById('mTitle').textContent = seg.name;
+  document.getElementById('mDesc').textContent = '💡 ' + seg.desc;
+  document.getElementById('cnList').innerHTML = renderList(seg.cn);
+  document.getElementById('glList').innerHTML = renderList(seg.gl);
+  document.getElementById('mNote').textContent = seg.note || '';
+  document.getElementById('mNote').style.display = seg.note ? 'block' : 'none';
+  document.getElementById('overlay').classList.add('show');
+}
+function closeModal(){ document.getElementById('overlay').classList.remove('show'); }
+document.getElementById('overlay').addEventListener('click', e=>{ if(e.target.id==='overlay') closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+</script>
+</body>
+</html>
