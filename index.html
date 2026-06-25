@@ -7,88 +7,88 @@
 <style>
   *{ margin:0; padding:0; box-sizing:border-box; }
   body{ font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;
-    background:linear-gradient(135deg,#0d1b2a,#1b263b); color:#e0e6ed; line-height:1.6; padding-bottom:60px; }
+    background:linear-gradient(135deg,#ece8e1,#e2dcd1); color:#4a4540; line-height:1.6; padding-bottom:60px; }
   header{ text-align:center; padding:30px 20px 12px; }
-  header h1{ font-size:32px; color:#fff; }
-  header .sub{ color:#8fb3d9; font-size:16px; margin-top:8px; }
-  .tip{ color:#c0cad6; font-size:14.5px; margin:14px auto 0; max-width:960px; background:rgba(255,255,255,.06); padding:12px 18px; border-radius:10px; }
-  .tip b{ color:#ffce3a; }
+  header h1{ font-size:32px; color:#3a352f; }
+  header .sub{ color:#8a8175; font-size:16px; margin-top:8px; }
+  .tip{ color:#5a5249; font-size:14.5px; margin:14px auto 0; max-width:960px; background:rgba(255,255,255,.55); padding:12px 18px; border-radius:10px; border:1px solid rgba(0,0,0,.05); }
+  .tip b{ color:#b08968; }
 
   /* 组装关系 HUB */
   .hub{ max-width:1180px; margin:24px auto; padding:0 18px; }
-  .hub-title{ text-align:center; font-size:18px; color:#9fd3ff; margin-bottom:6px; font-weight:bold; }
-  .hub-note{ text-align:center; font-size:13px; color:#8295a8; margin-bottom:18px; }
+  .hub-title{ text-align:center; font-size:18px; color:#6d8a99; margin-bottom:6px; font-weight:bold; }
+  .hub-note{ text-align:center; font-size:13px; color:#9a9184; margin-bottom:18px; }
   .modrow{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
   .modcard{ border-radius:14px; padding:18px 16px; cursor:pointer; transition:.18s; border:2px solid transparent;
-    background:rgba(255,255,255,.06); position:relative; min-height:120px; }
-  .modcard:hover{ transform:translateY(-4px); background:rgba(255,255,255,.13); box-shadow:0 10px 30px rgba(0,0,0,.4); }
+    background:rgba(255,255,255,.6); position:relative; min-height:120px; box-shadow:0 2px 10px rgba(0,0,0,.05); }
+  .modcard:hover{ transform:translateY(-4px); background:rgba(255,255,255,.92); box-shadow:0 10px 30px rgba(0,0,0,.12); }
   .modcard .mc-ico{ font-size:30px; }
-  .modcard .mc-name{ font-size:20px; font-weight:bold; color:#fff; margin-top:4px; }
-  .modcard .mc-role{ font-size:13px; color:#b9c6d4; margin-top:3px; }
-  .modcard .mc-tag{ display:inline-block; font-size:11px; background:rgba(255,255,255,.18); padding:2px 8px; border-radius:8px; margin-top:8px; color:#e8eef4; }
-  .modcard .mc-cta{ position:absolute; bottom:10px; right:14px; font-size:12px; color:#ffce3a; }
+  .modcard .mc-name{ font-size:20px; font-weight:bold; color:#3a352f; margin-top:4px; }
+  .modcard .mc-role{ font-size:13px; color:#6e655b; margin-top:3px; }
+  .modcard .mc-tag{ display:inline-block; font-size:11px; background:rgba(0,0,0,.06); padding:2px 8px; border-radius:8px; margin-top:8px; color:#5a5249; }
+  .modcard .mc-cta{ position:absolute; bottom:10px; right:14px; font-size:12px; color:#b08968; }
 
-  .assemble-lbl{ text-align:center; color:#7fd1b9; font-size:14px; margin:14px 0 10px; }
+  .assemble-lbl{ text-align:center; color:#7a8f6e; font-size:14px; margin:14px 0 10px; }
 
-  .pcbcard{ background:linear-gradient(135deg,#2d6a4f,#1b4332); border:2px solid #52b788; border-radius:14px;
+  .pcbcard{ background:linear-gradient(135deg,#8a9b82,#7a8f6e); border:2px solid #6e845f; border-radius:14px;
     padding:20px; text-align:center; cursor:pointer; transition:.18s; }
-  .pcbcard:hover{ transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,0,0,.4); }
+  .pcbcard:hover{ transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,0,0,.18); }
   .pcbcard .p-name{ font-size:22px; font-weight:bold; color:#fff; }
-  .pcbcard .p-role{ font-size:13.5px; color:#cfe8dc; margin-top:4px; }
-  .pcbcard .mc-cta{ font-size:12px; color:#ffce3a; margin-top:6px; display:inline-block; }
+  .pcbcard .p-role{ font-size:13.5px; color:#eef2e8; margin-top:4px; }
+  .pcbcard .mc-cta{ font-size:12px; color:#fdf6e3; margin-top:6px; display:inline-block; }
 
-  .termcard{ background:linear-gradient(135deg,#5a189a,#3c096c); border:2px solid #9d4edd; border-radius:14px;
+  .termcard{ background:linear-gradient(135deg,#9a8aa0,#85788c); border:2px solid #7a6d82; border-radius:14px;
     padding:18px; text-align:center; cursor:pointer; transition:.18s; margin-top:14px; }
-  .termcard:hover{ transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,0,0,.4); }
+  .termcard:hover{ transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,0,0,.18); }
   .termcard .t-name{ font-size:19px; font-weight:bold; color:#fff; }
-  .termcard .t-role{ font-size:13px; color:#e0c9f0; margin-top:3px; }
-  .termcard .mc-cta{ font-size:12px; color:#ffce3a; margin-top:6px; display:inline-block; }
+  .termcard .t-role{ font-size:13px; color:#f0ebf3; margin-top:3px; }
+  .termcard .mc-cta{ font-size:12px; color:#fdf6e3; margin-top:6px; display:inline-block; }
 
-  .legend{ text-align:center; margin:22px auto 0; font-size:14px; color:#cdd8e3; max-width:1000px; }
-  .legend .badge{ display:inline-block; background:#ffce3a; color:#1b263b; font-size:12px; padding:1px 8px; border-radius:10px; font-weight:bold; }
+  .legend{ text-align:center; margin:22px auto 0; font-size:14px; color:#5a5249; max-width:1000px; }
+  .legend .badge{ display:inline-block; background:#b08968; color:#fff; font-size:12px; padding:1px 8px; border-radius:10px; font-weight:bold; }
   .tierkey{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:12px; }
   .tierkey span{ font-size:12.5px; padding:3px 12px; border-radius:14px; color:#fff; }
 
   /* 弹窗 */
-  .overlay{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.72); z-index:50; justify-content:center; align-items:flex-start; padding:30px 14px; overflow-y:auto; }
+  .overlay{ display:none; position:fixed; inset:0; background:rgba(58,53,47,.55); z-index:50; justify-content:center; align-items:flex-start; padding:30px 14px; overflow-y:auto; }
   .overlay.show{ display:flex; }
-  .modal{ background:#0f1b2c; border-radius:16px; max-width:1080px; width:100%; box-shadow:0 20px 60px rgba(0,0,0,.6); border:1px solid rgba(255,255,255,.12); animation:pop .2s; }
+  .modal{ background:#f5f2ec; border-radius:16px; max-width:1080px; width:100%; box-shadow:0 20px 60px rgba(0,0,0,.3); border:1px solid rgba(0,0,0,.08); animation:pop .2s; }
   @keyframes pop{ from{transform:scale(.96);opacity:0} to{transform:scale(1);opacity:1} }
-  .modal-head{ padding:20px 26px; border-bottom:1px solid rgba(255,255,255,.1); position:sticky; top:0; background:#0f1b2c; border-radius:16px 16px 0 0; z-index:2; }
-  .modal-head h2{ font-size:24px; color:#fff; }
-  .modal-head .m-desc{ font-size:14px; color:#c0cad6; margin-top:6px; }
-  .modal-head .m-flow{ font-size:12.5px; color:#7fd1b9; margin-top:8px; background:rgba(127,209,185,.1); padding:6px 12px; border-radius:8px; display:inline-block; }
-  .close{ position:absolute; top:16px; right:22px; font-size:30px; color:#8fb3d9; cursor:pointer; line-height:1; }
-  .close:hover{ color:#fff; }
+  .modal-head{ padding:20px 26px; border-bottom:1px solid rgba(0,0,0,.08); position:sticky; top:0; background:#f5f2ec; border-radius:16px 16px 0 0; z-index:2; }
+  .modal-head h2{ font-size:24px; color:#3a352f; }
+  .modal-head .m-desc{ font-size:14px; color:#5a5249; margin-top:6px; }
+  .modal-head .m-flow{ font-size:12.5px; color:#6e845f; margin-top:8px; background:rgba(122,143,110,.14); padding:6px 12px; border-radius:8px; display:inline-block; }
+  .close{ position:absolute; top:16px; right:22px; font-size:30px; color:#9a9184; cursor:pointer; line-height:1; }
+  .close:hover{ color:#3a352f; }
   .modal-body{ padding:18px 22px 26px; }
 
-  .tier{ margin-bottom:14px; border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,.08); }
+  .tier{ margin-bottom:14px; border-radius:10px; overflow:hidden; border:1px solid rgba(0,0,0,.06); }
   .tier-head{ padding:9px 16px; font-size:16px; font-weight:bold; color:#fff; }
-  .tier-body{ padding:12px; background:rgba(255,255,255,.03); display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:10px; }
-  .item{ background:rgba(255,255,255,.05); border-radius:9px; padding:11px 13px; border-left:3px solid rgba(255,255,255,.25); }
-  .item .it-name{ font-size:15.5px; font-weight:bold; color:#fff; }
-  .item .it-note{ font-size:12px; color:#9fb0c0; margin:4px 0 8px; }
+  .tier-body{ padding:12px; background:rgba(0,0,0,.02); display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:10px; }
+  .item{ background:rgba(255,255,255,.7); border-radius:9px; padding:11px 13px; border-left:3px solid rgba(0,0,0,.15); }
+  .item .it-name{ font-size:15.5px; font-weight:bold; color:#3a352f; }
+  .item .it-note{ font-size:12px; color:#7a7165; margin:4px 0 8px; }
   .it-stocks{ display:flex; flex-direction:column; gap:5px; }
   .srow{ display:flex; gap:6px; align-items:flex-start; font-size:13px; }
   .srow .flag{ font-size:11px; padding:1px 6px; border-radius:6px; flex:0 0 auto; margin-top:2px; }
-  .srow .flag.cn{ background:rgba(255,107,107,.2); color:#ff9b9b; }
-  .srow .flag.gl{ background:rgba(77,171,247,.2); color:#8fc7ff; }
+  .srow .flag.cn{ background:rgba(176,122,110,.2); color:#9a5546; }
+  .srow .flag.gl{ background:rgba(109,138,153,.22); color:#4f6f80; }
   .srow .stk{ display:flex; flex-wrap:wrap; gap:5px; }
-  .chip{ background:rgba(255,255,255,.07); border-radius:6px; padding:2px 8px; font-size:12.5px; color:#e2e9f0; white-space:nowrap; }
-  .chip.leader{ background:rgba(255,206,58,.18); border:1px solid rgba(255,206,58,.5); color:#fff; font-weight:bold; }
-  .chip .star{ color:#ffce3a; }
-  .chip .code{ color:#8295a8; font-size:11px; font-family:monospace; margin-left:3px; }
+  .chip{ background:rgba(0,0,0,.05); border-radius:6px; padding:2px 8px; font-size:12.5px; color:#4a4540; white-space:nowrap; }
+  .chip.leader{ background:rgba(176,137,104,.18); border:1px solid rgba(176,137,104,.55); color:#7a5a3c; font-weight:bold; }
+  .chip .star{ color:#b08968; }
+  .chip .code{ color:#9a9184; font-size:11px; font-family:monospace; margin-left:3px; }
 
-  footer{ text-align:center; color:#5a7fa6; font-size:13px; margin-top:34px; padding:0 20px; }
-  .disc{ max-width:920px; margin:0 auto 10px; font-size:12.5px; color:#6b8299; }
+  footer{ text-align:center; color:#9a9184; font-size:13px; margin-top:34px; padding:0 20px; }
+  .disc{ max-width:920px; margin:0 auto 10px; font-size:12.5px; color:#9a9184; }
   @media(max-width:820px){ .modrow{ grid-template-columns:repeat(2,1fr); } }
 </style>
 </head>
 <body>
 <header>
   <h1>AI硬件产业链 · 核心模块上下游图谱</h1>
-  <div class="sub">四大核心模块 → 焊装在 PCB 上 → 组成 AI 服务器 / 终端</div>
-  <div class="tip">📌 怎么看：上面四个<b>核心模块</b>（芯片 / 光模块 / 存储 / MLCC）各自往上游深挖，最后都焊装到中间的 <b>PCB 电路板</b> 上，组成下方的<b>服务器与终端</b>。<b>点任一方块</b>，即可展开该模块“工具→设备→零部件→材料→底层矿产”的完整上游树和中外标的。</div>
+  <div class="sub">核心模块 → 焊装在 PCB 上 → 组成 AI 服务器 / 终端</div>
+  <div class="tip">📌 怎么看：上面的<b>核心模块</b>（芯片 / 光模块 / 存储 / MLCC / 散热…）各自往上游深挖，最后都焊装到中间的 <b>PCB 电路板</b> 上，组成下方的<b>服务器与终端</b>。<b>点任一方块</b>，即可展开该模块“工具→设备→零部件→材料→底层矿产”的完整上游树和中外标的。</div>
 </header>
 
 <div class="hub">
@@ -114,14 +114,14 @@
   <div class="legend">
     <span class="badge">★ = 龙头/最推荐</span>　带代码=A股　|　🇨🇳中国　🌐海外
     <div class="tierkey">
-      <span style="background:#6b4e9e">底层矿产</span>
-      <span style="background:#1d6a96">半导体/电子材料</span>
-      <span style="background:#b5651d">设备 & 核心零部件</span>
-      <span style="background:#2d6a4f">制造 / 封装</span>
-      <span style="background:#9a3b3b">模块成品</span>
-      <span style="background:#5a189a">下游应用</span>
+      <span style="background:#8a7a92">底层矿产</span>
+      <span style="background:#6d8a99">半导体/电子材料</span>
+      <span style="background:#bb9457">设备 & 核心零部件</span>
+      <span style="background:#7a8f6e">制造 / 封装</span>
+      <span style="background:#b07a6e">模块成品</span>
+      <span style="background:#9a7a9a">下游应用</span>
     </div>
-    <div style="font-size:12px;color:#8295a8;margin-top:8px">层级方向：矿产基础原料 → 高纯化工/金属/硅 → 半导体材料 → 半导体设备/零部件 → 晶圆制造 → 芯片/模块 → 整机</div>
+    <div style="font-size:12px;color:#9a9184;margin-top:8px">层级方向：矿产基础原料 → 高纯化工/金属/硅 → 半导体材料 → 半导体设备/零部件 → 晶圆制造 → 芯片/模块 → 整机</div>
   </div>
 </div>
 
@@ -147,14 +147,14 @@ function c(nm,code,L){ return {nm,code:code||'',L:!!L}; }
 function row(cn,gl){ return {cn:cn||[],gl:gl||[]}; }
 function it(name,note,r){ return {name,note:note||'',cn:(r&&r.cn)||[],gl:(r&&r.gl)||[]}; }
 
-const TIERCOLOR={ mineral:"#6b4e9e", material:"#1d6a96", equip:"#b5651d", mfg:"#2d6a4f", product:"#9a3b3b", app:"#5a189a" };
+const TIERCOLOR={ mineral:"#8a7a92", material:"#6d8a99", equip:"#bb9457", mfg:"#7a8f6e", product:"#b07a6e", app:"#9a7a9a" };
 
 const MODCARDS=[
-  {id:"chip", ico:"🧠", name:"芯片", role:"运算大脑 GPU/CPU/ASIC", tag:"上游最深：EDA+设备+材料+矿产", color:"#1982c4"},
-  {id:"optical", ico:"💡", name:"光模块", role:"数据高速“光收发器”", tag:"含 CPO 技术路线", color:"#00afb9"},
-  {id:"storage", ico:"💾", name:"存储", role:"数据仓库 DRAM/HBM/NAND", tag:"HBM 为AI最稀缺资源", color:"#8ac926"},
-  {id:"mlcc", ico:"🔋", name:"MLCC 被动元件", role:"电容/电感 稳压储能", tag:"AI服务器用量数倍增", color:"#ff924c"},
-  {id:"thermal", ico:"❄️", name:"散热 / 热管理", role:"给算力“退烧”：液冷系统+导热材料", tag:"冷板/浸没/CDU/快接头·英伟达认证", color:"#0096c7"},
+  {id:"chip", ico:"🧠", name:"芯片", role:"运算大脑 GPU/CPU/ASIC", tag:"上游最深：EDA+设备+材料+矿产", color:"#8a9aa3"},
+  {id:"optical", ico:"💡", name:"光模块", role:"数据高速“光收发器”", tag:"含 CPO 技术路线", color:"#9caf94"},
+  {id:"storage", ico:"💾", name:"存储", role:"数据仓库 DRAM/HBM/NAND", tag:"HBM 为AI最稀缺资源", color:"#c4b08a"},
+  {id:"mlcc", ico:"🔋", name:"MLCC 被动元件", role:"电容/电感 稳压储能", tag:"AI服务器用量数倍增", color:"#c08a7a"},
+  {id:"thermal", ico:"❄️", name:"散热 / 热管理", role:"给算力“退烧”：液冷系统+导热材料", tag:"冷板/浸没/CDU/快接头·英伟达认证", color:"#9aa7ad"},
 ];
 
 const MODULES={
